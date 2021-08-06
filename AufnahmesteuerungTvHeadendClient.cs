@@ -4,15 +4,29 @@ using TvHeadendRestApiClientLibrary;
 
 namespace AufnahmesteuerungTvHeadend
 {
+    /// <summary>
+    /// Cli-Client for control, add, remove recordings in TvHeadend. For use with TV-Browser.
+    /// This is free software that I made for myself in my spare time. I offer these freely, without financial intentions. 
+    /// Author: Oliver Matle
+    /// Date: August, 2021
+    /// </summary>
+    /// <seealso cref="https://github.com/Excogitatoris69/TvHeadendRestApiClientLibrary"/>
+    /// <seealso cref="https://tvheadend.org/"/>
+    /// <seealso cref="https://www.tvbrowser.org/"/>
+    /// <seealso cref="https://github.com/commandlineparser/commandline"/>
+    /// 
     class AufnahmesteuerungTvHeadendClient
     {
+        public static readonly string releaseString = "1.0.0 , August 2021";
+        private static int necessaryApiVersion = 19;
         static void Main(string[] args)
         {
+            Console.WriteLine("AufnahmesteuerungTvHeadendClient. Release:{0}, TvHeadendLibrary-Release:{1}", releaseString, TvHeadendLibrary.RELEASESTRING); 
             Execute(args);
         }
 
 
-        static private void Execute(string[] args)
+        private static void Execute(string[] args)
         {
             RequestData requestData = new RequestData();
             ParserResult<CommandLineOptions> result = Parser.Default.ParseArguments<CommandLineOptions>(args);
@@ -41,6 +55,9 @@ namespace AufnahmesteuerungTvHeadend
 
             try
             {
+                
+                CheckApiVersion(requestData);
+
                 if (requestData.Command == Command.DVRCREATE)
                 {
                     TvHeadendLibrary aTvHeadendLibrary = new TvHeadendLibrary();
@@ -128,6 +145,19 @@ namespace AufnahmesteuerungTvHeadend
                 Environment.Exit(1);
             }
 
+        }
+
+        /// <summary>
+        /// Compare Api-Version of TvHeadend with Necessary Api-Version.
+        /// </summary>
+        private static void CheckApiVersion(RequestData requestData)
+        {
+            TvHeadendLibrary aTvHeadendLibrary = new TvHeadendLibrary();
+            Serverinfo serverinfo = aTvHeadendLibrary.GetServerinfo(requestData);
+            if (necessaryApiVersion != serverinfo.VersionApi)
+            {
+                Console.WriteLine("Warning of possible incompatibility due to different API-Versions.  Necessary Api-Version:{0}, Available Version:{1}", necessaryApiVersion, serverinfo.VersionApi);
+            }
         }
 
         private static string FormatUnixtimestamp(double unixtimestamp)
