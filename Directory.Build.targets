@@ -1,0 +1,41 @@
+<Project>
+
+	<PropertyGroup>
+		<ReleasePath>$(MSBuildProjectDirectory)\$(OutputPath)</ReleasePath>
+		<DocDir>$(MSBuildProjectDirectory)\docs</DocDir>
+		<TempBuildDir>$(MSBuildProjectDirectory)\tempBuildDir</TempBuildDir>
+		<DestZipFile>$(MSBuildProjectDirectory)\binaries\AufnahmesteuerungTvHeadend_$(VERSION).zip</DestZipFile>
+	</PropertyGroup>
+
+	<Target Name="CustomAfterBuild" AfterTargets="Build" Condition="$(Configuration) == 'Release'">
+		<CallTarget Targets="makeZip" />
+		
+	</Target>
+
+	<Target Name="test">
+		<Message Text="Wert:$(ReleasePath)" />
+		
+	</Target>
+
+	<!-- 
+		Copy all files to temporary directory and create zipfile.
+	-->
+	<Target Name="makeZip">
+		<Message Text="Create temp. build dir:$(tempBuildDir)" />
+		<MakeDir Directories="$(tempBuildDir)" />
+		<Message Text="Generate Zipfile: $(DestZipFile)" />
+
+		<ItemGroup>
+			<FileList Include="$(ReleasePath)\*.dll;$(ReleasePath)\*.exe;$(ReleasePath)\*.json" Exclude="$(ReleasePath)\*.dev.json" />
+			<FileListDoc Include="$(DocDir)\*.*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(FileList)" DestinationFolder="$(TempBuildDir)" />
+		<Copy SourceFiles="@(FileListDoc)" DestinationFolder="$(TempBuildDir)" />
+		<ZipDirectory DestinationFile="$(DestZipFile)" SourceDirectory="$(TempBuildDir)"  Overwrite="true"/>
+		<RemoveDir Directories="$(tempBuildDir)" />
+		<Message Text="finished" />
+		<!--
+		-->
+	</Target>
+
+</Project>

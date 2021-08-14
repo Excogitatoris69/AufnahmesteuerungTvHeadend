@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using System.Text;
 using TvHeadendRestApiClientLibrary;
 
 namespace AufnahmesteuerungTvHeadend
@@ -17,10 +18,11 @@ namespace AufnahmesteuerungTvHeadend
     /// 
     class AufnahmesteuerungTvHeadendClient
     {
-        public static readonly string releaseString = "1.0.0 , August 2021";
+        public static readonly string releaseString = "1.0.1 , August 2021";
         private static int necessaryApiVersion = 19;
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.Latin1;
             Console.WriteLine("AufnahmesteuerungTvHeadendClient. Release:{0}, TvHeadendLibrary-Release:{1}", releaseString, TvHeadendLibrary.RELEASESTRING); 
             Execute(args);
         }
