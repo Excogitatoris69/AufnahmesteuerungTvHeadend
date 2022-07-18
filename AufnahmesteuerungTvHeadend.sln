@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AufnahmesteuerungTvHeadend", "AufnahmesteuerungTvHeadend.csproj", "{5249FF5C-F903-499E-818A-DFDC878B35D5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TvHeadendRestApiClientLibrary", "..\TvHeadendRestApiClientLibrary\TvHeadendRestApiClientLibrary.csproj", "{14591F65-E570-436F-80CE-FF5E5B953553}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TvHeadendRestApiClientLibrary_Test", "..\TvHeadendRestApiClientLibrary_Test\TvHeadendRestApiClientLibrary_Test.csproj", "{952B37F6-266E-48BB-AEB5-D06C86885AA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AufnahmesteuerungTvHeadend_Test", "..\AufnahmesteuerungTvHeadend_Test\AufnahmesteuerungTvHeadend_Test.csproj", "{8A277E4E-7D8A-45B7-AE76-9069D6323088}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{5249FF5C-F903-499E-818A-DFDC878B35D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5249FF5C-F903-499E-818A-DFDC878B35D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5249FF5C-F903-499E-818A-DFDC878B35D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14591F65-E570-436F-80CE-FF5E5B953553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14591F65-E570-436F-80CE-FF5E5B953553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14591F65-E570-436F-80CE-FF5E5B953553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14591F65-E570-436F-80CE-FF5E5B953553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952B37F6-266E-48BB-AEB5-D06C86885AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952B37F6-266E-48BB-AEB5-D06C86885AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952B37F6-266E-48BB-AEB5-D06C86885AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952B37F6-266E-48BB-AEB5-D06C86885AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A277E4E-7D8A-45B7-AE76-9069D6323088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A277E4E-7D8A-45B7-AE76-9069D6323088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A277E4E-7D8A-45B7-AE76-9069D6323088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A277E4E-7D8A-45B7-AE76-9069D6323088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

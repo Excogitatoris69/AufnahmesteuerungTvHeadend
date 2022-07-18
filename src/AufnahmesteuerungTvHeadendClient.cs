@@ -16,11 +16,11 @@ namespace AufnahmesteuerungTvHeadend
     /// <seealso cref="https://www.tvbrowser.org/"/>
     /// <seealso cref="https://github.com/commandlineparser/commandline"/>
     /// 
-    class AufnahmesteuerungTvHeadendClient
+    public class AufnahmesteuerungTvHeadendClient
     {
-        public static readonly string releaseString = "1.0.1 , August 2021";
+        public static readonly string releaseString = "1.1 , Juli 2022";
         private static int necessaryApiVersion = 19;
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.Latin1;
             Console.WriteLine("AufnahmesteuerungTvHeadendClient. Release:{0}, TvHeadendLibrary-Release:{1}", releaseString, TvHeadendLibrary.RELEASESTRING); 
@@ -52,7 +52,7 @@ namespace AufnahmesteuerungTvHeadend
             });
             if (parseResult.Tag == ParserResultType.NotParsed)
             {
-                Environment.Exit(1);
+                //Environment.Exit(1);
             }
 
             try
@@ -112,7 +112,7 @@ namespace AufnahmesteuerungTvHeadend
                     {
                         foreach (DvrConfigEntry elem in dvrConfigEntryList.Entries)
                         {
-                            Console.WriteLine("{1}: {0}", elem.Name, elem.Uuid);
+                            Console.WriteLine("{0}", elem.Name);
                         }
                     }
                 }
@@ -133,7 +133,7 @@ namespace AufnahmesteuerungTvHeadend
                     TvHeadendLibrary aTvHeadendLibrary = new TvHeadendLibrary();
                     Serverinfo serverinfo = aTvHeadendLibrary.GetServerinfo(requestData);
                     Console.WriteLine("API:{0},TvHeadend:{1}", serverinfo.VersionApi, serverinfo.VersionSoftware);
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace AufnahmesteuerungTvHeadend
             catch (TvHeadendException e)
             {
                 Console.Error.WriteLine(e.Message);
-                Environment.Exit(1);
+                //Environment.Exit(1);
             }
 
         }

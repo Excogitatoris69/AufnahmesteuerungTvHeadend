@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" >
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -17,11 +17,11 @@
 
 
 	<ItemGroup>
-		<Reference Include="TvHeadendRestApiClientLibrary">
-			<HintPath>libs\TvHeadendRestApiClientLibrary.dll</HintPath>
-		</Reference>
+	  <ProjectReference Include="..\TvHeadendRestApiClientLibrary\TvHeadendRestApiClientLibrary.csproj" />
 	</ItemGroup>
 
+
+	
 	
 
 </Project>
