@@ -11,7 +11,7 @@
 *.sln.docstates
 docs/
 libs/
-binaries/
+binaries/AufnahmesteuerungTvHeadend_Binaries
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
