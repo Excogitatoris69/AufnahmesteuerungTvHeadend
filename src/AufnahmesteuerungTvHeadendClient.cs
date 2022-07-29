@@ -18,7 +18,7 @@ namespace AufnahmesteuerungTvHeadend
     /// 
     public class AufnahmesteuerungTvHeadendClient
     {
-        public static readonly string releaseString = "1.1 , Juli 2022";
+        public static readonly string releaseString = "1.1.1 , Juli 2022";
         private static int necessaryApiVersion = 19;
         public static void Main(string[] args)
         {
@@ -57,7 +57,7 @@ namespace AufnahmesteuerungTvHeadend
 
             try
             {
-                
+                CleanParams(requestData);
                 CheckApiVersion(requestData);
 
                 if (requestData.Command == Command.DVRCREATE)
@@ -147,6 +147,24 @@ namespace AufnahmesteuerungTvHeadend
                 //Environment.Exit(1);
             }
 
+        }
+
+        /// <summary>
+        /// Cleans the parameters and adds default values if they are incomplete.
+        /// </summary>
+        /// <param name="requestData"></param>
+        private static void CleanParams(RequestData requestData)
+        {
+            if(requestData.Title == null || requestData.Title.Trim().Length == 0)
+            {
+                //requestData.Title = "not available";
+                // title is channel and timestamp
+                requestData.Title = string.Format("{0}_{1}", requestData.ChannelName, FormatUnixtimestamp(requestData.Starttime));
+            }
+            //if (requestData.Description == null || requestData.Description.Trim().Length == 0)
+            //{
+            //    requestData.Description = "";
+            //}
         }
 
         /// <summary>
