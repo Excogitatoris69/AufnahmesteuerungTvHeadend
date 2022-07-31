@@ -1,4 +1,4 @@
-# AufnahmesteuerungTvHeadend - Release 1.1
+# AufnahmesteuerungTvHeadend - Release 1.2
 Kommandozeilenprogramm zur Steuerung von TvHeadend sowie zum Hinzufügen und Löschen von TV-Aufnahmen.
 Dient als Bindeglied zwischen TV-Browser und TvHeadend. 
 Siehe https://www.tvbrowser.org/ und https://tvheadend.org/
