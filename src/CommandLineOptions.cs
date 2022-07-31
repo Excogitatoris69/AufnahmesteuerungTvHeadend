@@ -43,5 +43,8 @@ namespace AufnahmesteuerungTvHeadend
         [Option(shortName: 'o', longName: "comment", HelpText = "DVR-Comment", Required = false)]
         public string DvrComment { get; set; }
 
+        [Option(shortName: 'x', longName: "streamplayer", HelpText = "Streamplayer path", Required = false)]
+        public string StreamplayerPath { get; set; }
+
     }
 }

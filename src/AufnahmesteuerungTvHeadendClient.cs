@@ -1,7 +1,9 @@
 ﻿using CommandLine;
 using System;
+using System.IO;
 using System.Text;
 using TvHeadendRestApiClientLibrary;
+using System.Diagnostics;
 
 namespace AufnahmesteuerungTvHeadend
 {
@@ -18,7 +20,7 @@ namespace AufnahmesteuerungTvHeadend
     /// 
     public class AufnahmesteuerungTvHeadendClient
     {
-        public static readonly string releaseString = "1.1.1 , Juli 2022";
+        public static readonly string releaseString = "1.2 , Juli 2022";
         private static int necessaryApiVersion = 19;
         public static void Main(string[] args)
         {
@@ -49,6 +51,7 @@ namespace AufnahmesteuerungTvHeadend
                 requestData.DvrProfileName = cmdParam.DvrProfileName;
                 requestData.Comment = cmdParam.DvrComment;
                 requestData.Priority = Priority.Unknown;
+                requestData.StreamplayerPath = cmdParam.StreamplayerPath;
             });
             if (parseResult.Tag == ParserResultType.NotParsed)
             {
@@ -134,6 +137,34 @@ namespace AufnahmesteuerungTvHeadend
                     Serverinfo serverinfo = aTvHeadendLibrary.GetServerinfo(requestData);
                     Console.WriteLine("API:{0},TvHeadend:{1}", serverinfo.VersionApi, serverinfo.VersionSoftware);
                     //Environment.Exit(0);
+                }
+                else if (requestData.Command == Command.LIVESTREAM)
+                {
+                    TvHeadendLibrary aTvHeadendLibrary = new TvHeadendLibrary();
+                    string streamUrl = aTvHeadendLibrary.getLivestreamUrl(requestData);
+                    if(streamUrl != null)
+                    {
+                        if (!File.Exists(requestData.StreamplayerPath))
+                        {
+                            Console.WriteLine("Not Successful. Videoplayer not found in path: " + requestData.StreamplayerPath);
+                            throw new TvHeadendException(Messages.MESSAGE_PATH_NOT_FOUND + ": " + requestData.StreamplayerPath);
+                        }
+                        else
+                        {
+                            ProcessStartInfo startInfo = new ProcessStartInfo();
+                            startInfo.Arguments = streamUrl;
+                            startInfo.FileName = requestData.StreamplayerPath;
+                            startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                            startInfo.UseShellExecute = false;
+                            Process exeProcess = Process.Start(startInfo);
+                            Console.WriteLine("Successful.");
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Not Successful. StreamUrl is null. ");
+                    }
                 }
                 else
                 {
