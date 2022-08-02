@@ -20,12 +20,14 @@ namespace AufnahmesteuerungTvHeadend
     /// 
     public class AufnahmesteuerungTvHeadendClient
     {
-        public static readonly string releaseString = "1.2 , Juli 2022";
         private static int necessaryApiVersion = 19;
         public static void Main(string[] args)
         {
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            
             Console.OutputEncoding = Encoding.Latin1;
-            Console.WriteLine("AufnahmesteuerungTvHeadendClient. Release:{0}, TvHeadendLibrary-Release:{1}", releaseString, TvHeadendLibrary.RELEASESTRING); 
+            Console.WriteLine("AufnahmesteuerungTvHeadendClient. Release:{0}, TvHeadendLibrary-Release:{1}", fvi.FileVersion, TvHeadendLibrary.RELEASESTRING); 
             Execute(args);
         }
 
@@ -142,18 +144,28 @@ namespace AufnahmesteuerungTvHeadend
                 {
                     TvHeadendLibrary aTvHeadendLibrary = new TvHeadendLibrary();
                     string streamUrl = aTvHeadendLibrary.getLivestreamUrl(requestData);
-                    if(streamUrl != null)
+                    string[] streamplayerData = splitStreamplayerParams(requestData.StreamplayerPath);
+
+                    if (streamUrl != null)
                     {
-                        if (!File.Exists(requestData.StreamplayerPath))
+                        if (!File.Exists(streamplayerData[0]))
                         {
-                            Console.WriteLine("Not Successful. Videoplayer not found in path: " + requestData.StreamplayerPath);
-                            throw new TvHeadendException(Messages.MESSAGE_PATH_NOT_FOUND + ": " + requestData.StreamplayerPath);
+                            Console.WriteLine("Not Successful. Videoplayer not found in path: " + streamplayerData[0]);
+                            throw new TvHeadendException(Messages.MESSAGE_PATH_NOT_FOUND + ": " + streamplayerData[0]);
                         }
                         else
                         {
+                            StringBuilder strbuf = new StringBuilder();
+                            strbuf.Append(streamUrl);
+                            if (streamplayerData[0] != null)
+                            {
+                                strbuf.Append(" ");
+                                strbuf.Append(streamplayerData[1]);
+                            }
+
                             ProcessStartInfo startInfo = new ProcessStartInfo();
-                            startInfo.Arguments = streamUrl;
-                            startInfo.FileName = requestData.StreamplayerPath;
+                            startInfo.Arguments = strbuf.ToString();
+                            startInfo.FileName = streamplayerData[0];
                             startInfo.WindowStyle = ProcessWindowStyle.Normal;
                             startInfo.UseShellExecute = false;
                             Process exeProcess = Process.Start(startInfo);
@@ -178,6 +190,91 @@ namespace AufnahmesteuerungTvHeadend
                 //Environment.Exit(1);
             }
 
+        }
+
+        /// <summary>
+        /// Im Parameter --streamplayer können folgende Parameter enthalten sein.
+        /// Fall 1: nur der Pfad
+        /// Fall 2: Pfad und sonstige VLC-Parameter
+        /// Diese Funktion trennt die Zeichenfolge auf.
+        /// Im Array an Pos. 1 sthet immer der Pfad
+        /// Im Array an Pos. 2 steht immer der Rest, also die zusätzlichen VLC-Parameter
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static string[] splitStreamplayerParams(string param)
+        {
+            string[] result = new string[2];
+            string param1 = param.Trim();
+            string param2;
+
+            int pos1 = param1.IndexOf(',', 0); // 123, --vlc-option  -> pos1=3
+            if (pos1 < 0) // Fall 1
+            {
+                result[0] = param1;
+                result[1] = null;
+            }
+            else // Fall 2
+            {
+                result[0] = param1.Substring(0, pos1).Trim();
+                param2 = param1.Substring(pos1 + 1).Trim();
+                if (param2.Length > 0)
+                    result[1] = param2;
+                else
+                    result[1] = null;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Im Parameter --streamplayer können folgende Parameter enthalten sein.
+        /// Fall 1: nur der Pfad
+        /// Fall 2: nur der Pfad , jedoch mit Leerzeichen und deshalb vorne und hinten durch Doppelhochkomma umschlossen
+        /// Fall 3: Pfad ohne Leerzeichen und sonstige VLC-Parameter
+        /// Fall 4: Pfad mit Leerzeichen, mit Hochkommas und sonstige VLC-Parameter.
+        /// Diese Funktion trennt die Zeichenfolge auf.
+        /// Im Array an Pos. 1 sthet immer der Pfad ohne Hochkomma
+        /// Im Array an Pos. 2 steht immer der Rest, also die zusätzlichen VLC-Parameter
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static string [] splitStreamplayerParams1(string param)
+        {
+            string[] result = new string[2];
+            string param1 = param.Trim();
+            string param2;
+
+            if (param1.StartsWith("\"")) // Fall 2 oder 4
+            {
+                int pos1 = param1.IndexOf('"', 1); // "123" --vlc-option  -> pos1=4
+                result[0] = param1.Substring(1, pos1-1);
+                param2 = param1.Substring(pos1 + 1).Trim();
+                if (param2.Length > 0)
+                    result[1] = param2;
+                else
+                    result[1] = null;
+            }
+            else// Fall 1 oder 3
+            {
+                int pos1 = param1.IndexOf(' ', 0); // 123 --vlc-option  -> pos1=3
+                if (pos1 < 0)
+                {
+                    result[0] = param1;
+                    result[1] = null;
+                }
+                else
+                {
+                    result[0] = param1.Substring(0, pos1);
+                    param2 = param1.Substring(pos1).Trim();
+                    if (param2.Length > 0)
+                        result[1] = param2;
+                    else
+                        result[1] = null;
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
