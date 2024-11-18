@@ -1,3 +1,6 @@
+This program is outdated and will not be developed further here. A better new version can be found in my new repository TvHeadendRecordControlCli.
+See: https://github.com/Excogitatoris69/TvHeadendRecordControlCli
+
 # AufnahmesteuerungTvHeadend - Release 1.2
 Kommandozeilenprogramm zur Steuerung von TvHeadend sowie zum Hinzufügen und Löschen von TV-Aufnahmen.
 Dient als Bindeglied zwischen TV-Browser und TvHeadend. 
